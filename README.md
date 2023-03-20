@@ -1,2 +1,2 @@
-# ml-sandbox
-Playground for machine learning experimenting
+# Machine Learning Mini Projects
+Sandbox for experimenting with machine learning concepts and methods.
