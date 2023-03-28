@@ -4,7 +4,7 @@ of truth for improved maintenance"""
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.preprocessing import OneHotEncoder, StandardScaler, LabelBinarizer
 from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.pipeline import Pipeline
@@ -73,11 +73,19 @@ def run_model(path, features, estimator, param_grid=None):
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42
     )
+
+    if estimator.__class__.__name__ == 'XGBClassifier':
+        y_train = LabelBinarizer().fit_transform(y_train)
+        y_test = LabelBinarizer().fit_transform(y_test)
+
     model = fit_model(features, X_train, y_train, estimator, param_grid)
 
     # Evaluate
-    print('Results for test set:')
-    model_evaluation(model, X_test, y_test)
+    if not estimator.__class__.__name__ == 'XGBClassifier':
+        print('Results for test set:')
+        model_evaluation(model, X_test, y_test)
+    else:
+        print(classification_report(y_test, model.predict(X_test)))
 
     return model
 
