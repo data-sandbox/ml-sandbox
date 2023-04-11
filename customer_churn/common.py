@@ -90,8 +90,13 @@ def run_model(path, features, estimator, param_grid=None):
     model = fit_model(features, X_train, y_train, estimator, param_grid)
 
     # Evaluate
-    model_evaluation(model, X_test, y_test, 'test')
-    model_evaluation(model, X_train, y_train, 'train')
+    # if not estimator.__class__.__name__ == 'SVC':
+    #     model_evaluation(model, X_test, y_test, 'test')
+    #     model_evaluation(model, X_train, y_train, 'train')
+    # else:
+    #     print(metrics.classification_report(y_test, model.predict(X_test)))
+
+    print(metrics.classification_report(y_test, model.predict(X_test)))
 
     return model
 
